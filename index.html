@@ -8,20 +8,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    /* === Match the LaTeX look as closely as possible === */
     *, *::before, *::after { box-sizing: border-box; }
 
     :root{
-      --c-ink:    #1C033C;   /* primary dark purple/navy */
-      --c-accent: #4B28A4;   /* accent purple */
-      --c-meta:   #371e77;   /* meta grey-purple */
+      --c-ink:    #1C033C;
+      --c-accent: #4B28A4;
+      --c-meta:   #371e77;
       --bg:       #eef2f5;
     }
 
     html, body { margin: 0; padding: 0; }
     body {
       background: var(--bg);
-      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif; /* matches LaTeX \setmainfont{Arial} */
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
       color: var(--c-ink);
       padding: 28px 16px;
       display: flex;
@@ -56,15 +55,15 @@
     .btn-pdf:hover { background-color: #331c6e; transform: translateY(-1px); }
     .btn-pdf:disabled { opacity: 0.7; cursor: not-allowed; }
 
-    /* ===== Resume sheet (A4-ish proportions) ===== */
+    /* ===== Resume sheet ===== */
     .resume-container {
       width: 100%;
       background: #ffffff;
       box-shadow: 0 20px 35px -12px rgba(0,0,0,0.12);
     }
     .resume-inner {
-      padding: 0.4in 0.45in 0.4in 0.45in; /* mirrors LaTeX geometry top=.4in, bottom=.4in, scale=0.9 */
-      font-size: 12pt;                   /* close to LaTeX 14pt body but optimised for screen */
+      padding: 0.4in 0.45in 0.4in 0.45in;
+      font-size: 12pt;
       line-height: 1.35;
     }
 
@@ -101,7 +100,7 @@
     .contact-bar i { margin-right: 4px; }
     .contact-bar .sep { color: var(--c-meta); }
 
-    /* ===== Section (LaTeX \section: \Large \scshape with \titlerule) ===== */
+    /* ===== Section ===== */
     .section { margin-top: 0.55cm; }
     .section-title {
       color: var(--c-ink);
@@ -111,7 +110,7 @@
       letter-spacing: 0.6px;
       padding-bottom: 2pt;
       margin-bottom: 10pt;
-      border-bottom: 0.6pt solid var(--c-ink); /* the LaTeX \titlerule */
+      border-bottom: 0.6pt solid var(--c-ink);
     }
 
     /* ===== Body content ===== */
@@ -122,11 +121,8 @@
       text-align: justify;
     }
 
-    /* Skills - 2-column tabularx feel */
-    .skills-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+    /* Skills */
+    .skills-table { width: 100%; border-collapse: collapse; }
     .skills-table td {
       padding: 3px 0;
       font-size: 11pt;
@@ -207,11 +203,7 @@
     .edu-block .row2 { margin-top: 1px; }
 
     /* Certifications */
-    .cert-list {
-      list-style: none;
-      padding-left: 0;
-      margin: 0;
-    }
+    .cert-list { list-style: none; padding-left: 0; margin: 0; }
     .cert-list li {
       position: relative;
       padding-left: 18px;
@@ -227,11 +219,12 @@
       color: var(--c-accent);
     }
 
-.tech-stack{
-  font-weight: 500;
-  font-style:italic;
-}
-    /* ===== Print fallback (still works if user uses Ctrl+P) ===== */
+    .tech-stack{
+      font-weight: 500;
+      font-style: italic;
+      margin-left: 4px;
+    }
+
     @media print {
       body { background: #fff; padding: 0; margin: 0; }
       .download-area { display: none !important; }
@@ -245,7 +238,7 @@
 
 <div class="page-wrap">
 
-  <!-- Download button -->
+  <!-- Download button (lives outside resume-card so it's never captured) -->
   <div class="download-area" id="downloadArea">
     <button class="btn-pdf" id="downloadPDFbtn" type="button">
       <i class="fas fa-file-pdf"></i> Download as PDF
@@ -257,7 +250,7 @@
     <div class="resume-inner">
 
       <!-- Header -->
-      <div class="header">
+      <div class="header" data-pdf-block>
         <div class="name">Nitin Pandey</div>
         <div class="tagline">Backend Developer | Golang And Python</div>
         <div class="contact-bar">
@@ -272,7 +265,7 @@
       </div>
 
       <!-- Professional Summary -->
-      <div class="section">
+      <div class="section" data-pdf-block>
         <div class="section-title">Professional Summary</div>
         <p class="summary-text">
           Results-driven Backend Developer with 3+ years of experience architecting and delivering high-performance, scalable microservices and Monolithics APIs in Go and Python. Proven expertise in enhancing system security, automating complex workflows, and reducing operational overhead. Passionate about leveraging technologies like Docker, RabbitMQ, and Redis to build efficient and maintainable systems. Eager to apply my problem-solving skills to tackle new challenges and contribute to a forward-thinking engineering team.
@@ -280,56 +273,60 @@
       </div>
 
       <!-- Technical Skills -->
-<div class="section">
-  <div class="section-title">Technical Skills</div>
-  <table class="skills-table">
-    <tr><td class="skills-label">Languages:</td><td>Go (Golang), Python</td></tr>
-    <tr><td class="skills-label">Frameworks:</td><td>Gin, Flask</td></tr>
-    <tr><td class="skills-label">Frontend:</td><td>HTML, CSS, JavaScript</td></tr>
-    <tr><td class="skills-label">Databases:</td><td>PostgreSQL, MongoDB, Redis</td></tr>
-    <tr><td class="skills-label">DevOps & Tools:</td><td>Docker, Git</td></tr>
-    <tr><td class="skills-label">Messaging:</td><td>RabbitMQ</td></tr>
-    <tr><td class="skills-label">Operating Systems:</td><td>macOS, Linux</td></tr>
-    <tr><td class="skills-label">IDEs:</td><td>VS Code, Cursor</td></tr>
-    <tr><td class="skills-label">Familiar With:</td><td>gRPC, Kubernetes, Kafka, React.js, Next.js, CI/CD</td></tr>
-  </table>
-</div>
+      <div class="section" data-pdf-block>
+        <div class="section-title">Technical Skills</div>
+        <table class="skills-table">
+          <tr><td class="skills-label">Languages:</td><td>Go (Golang), Python</td></tr>
+          <tr><td class="skills-label">Frameworks:</td><td>Gin, Flask</td></tr>
+          <tr><td class="skills-label">Frontend:</td><td>HTML, CSS, JavaScript</td></tr>
+          <tr><td class="skills-label">Databases:</td><td>PostgreSQL, MongoDB, Redis</td></tr>
+          <tr><td class="skills-label">DevOps &amp; Tools:</td><td>Docker, Git</td></tr>
+          <tr><td class="skills-label">Messaging:</td><td>RabbitMQ</td></tr>
+          <tr><td class="skills-label">Operating Systems:</td><td>macOS, Linux</td></tr>
+          <tr><td class="skills-label">IDEs:</td><td>VS Code, Cursor</td></tr>
+          <tr><td class="skills-label">Familiar With:</td><td>gRPC, Kubernetes, Kafka, React.js, Next.js, CI/CD</td></tr>
+        </table>
+      </div>
+
       <!-- Professional Experience -->
-      <div class="section">
+      <div class="section" data-pdf-block>
         <div class="section-title">Professional Experience</div>
 
-        <div class="exp-header">
-          <span class="exp-company">Softcell Technologies Global Private Limited</span>
-          <span class="exp-date">Feb 2023 - Present</span>
-        </div>
-        <div class="exp-role-location">
-          <span class="exp-role">Software Developer</span>
-          <span>Mumbai</span>
+        <div data-pdf-block>
+          <div class="exp-header">
+            <span class="exp-company">Softcell Technologies Global Private Limited</span>
+            <span class="exp-date">Feb 2023 - Present</span>
+          </div>
+          <div class="exp-role-location">
+            <span class="exp-role">Software Developer</span>
+            <span>Mumbai</span>
+          </div>
         </div>
 
         <ul class="exp-list">
-          <li>
-            <b>Firewall Auditor :</b> Developed a Golang-based tool (Go, Gin, MongoDB) to parse and analyze firewall configurations from FortiGate, Palo Alto, and Check Point devices, enabling automated detection of security issues such as unused, duplicate, shadowed, and overly permissive rules while improving policy accuracy and reducing risk; implemented compliance validation across standards including CIS, PCI-DSS, DISA ,SANS, SOX, SOC2, NIST, HIPAA, and ISO27001; enhanced visibility through syslog analysis and structured reporting, generating actionable audit reports for remediation and continuous compliance; Product: <a href="https://www.softcell.com/mssp/firewall-config-auditor.html">Firewall Config Auditor</a><span class="tech-stack">[Go, Gin, MongoDB]</span>
+          <li data-pdf-block>
+            <b>Firewall Auditor :</b> Developed a Golang-based tool (Go, Gin, MongoDB) to parse and analyze firewall configurations from FortiGate, Palo Alto, and Check Point devices, enabling automated detection of security issues such as unused, duplicate, shadowed, and overly permissive rules while improving policy accuracy and reducing risk; implemented compliance validation across standards including CIS, PCI-DSS, DISA, SANS, SOX, SOC2, NIST, HIPAA, and ISO27001; enhanced visibility through syslog analysis and structured reporting, generating actionable audit reports for remediation and continuous compliance; Product: <a href="https://www.softcell.com/mssp/firewall-config-auditor.html">Firewall Config Auditor</a><span class="tech-stack">[Go, Gin, MongoDB]</span>
           </li>
-          <li>
+          <li data-pdf-block>
             <b>Multi-Tenant Phishing Simulation (GOPHISH):</b> Developed a core-to-cone SaaS platform for launching and tracking phishing campaigns. Automated template generation and user targeting, enabling clients to <b>measure employee vulnerability</b> and strengthen organizational security posture through data-driven awareness training.<span class="tech-stack">[Go, Gin, MongoDB, Apache]</span>
           </li>
-          <li>
+          <li data-pdf-block>
             <b>Internal Task Management System:</b> Built a full-featured task management application using Python and Flask to streamline internal project coordination and improve team productivity.<span class="tech-stack">[Go, Gin, MongoDB]</span>
           </li>
-          <li>
+          <li data-pdf-block>
             <b>License Management System:</b> Built comprehensive license solution using <strong>Golang with Gin</strong> and PostgreSQL. License generation, activation, expiry tracking. <span class="tech-stack">[Go, Gin, MongoDB]</span>
           </li>
-            <li>
-<b>Real-Time Brand Monitoring System:</b> Designed and implemented a scalable threat intelligence platform using Python/Flask; integrated RabbitMQ for asynchronous task processing and MongoDB/PostgreSQL for flexible data storage; incorporated NVD API for CVE ingestion and vulnerability intelligence; deployed Dockerized microservices ensuring <b>high scalability and ease of deployment</b>.<span class="tech-stack">[Python,Flask,MongoDB,Postgres,RabbitMQ,Docker]</span>          </li>
+          <li data-pdf-block>
+            <b>Real-Time Brand Monitoring System:</b> Designed and implemented a scalable threat intelligence platform using Python/Flask; integrated RabbitMQ for asynchronous task processing and MongoDB/PostgreSQL for flexible data storage; incorporated NVD API for CVE ingestion and vulnerability intelligence; deployed Dockerized microservices ensuring <b>high scalability and ease of deployment</b>.<span class="tech-stack">[Python, Flask, MongoDB, Postgres, RabbitMQ, Docker]</span>
+          </li>
         </ul>
       </div>
 
       <!-- Education -->
-      <div class="section">
+      <div class="section" data-pdf-block>
         <div class="section-title">Education</div>
 
-        <div class="edu-block">
+        <div class="edu-block" data-pdf-block>
           <div class="edu-row">
             <div class="left"><b>Integral University, Lucknow</b></div>
             <div class="date">Aug 2020 - Jan 2023</div>
@@ -339,7 +336,7 @@
           </div>
         </div>
 
-        <div class="edu-block">
+        <div class="edu-block" data-pdf-block>
           <div class="edu-row">
             <div class="left"><b>Mahatma Gandhi Kashi Vidyapith University, Varanasi</b></div>
             <div class="date">July 2017 - July 2020</div>
@@ -351,13 +348,13 @@
       </div>
 
       <!-- Certifications -->
-      <div class="section">
+      <div class="section" data-pdf-block>
         <div class="section-title">Certifications</div>
         <ul class="cert-list">
-          <li>Comprehensive Go Bootcamp with gRPC and Protocol Buffers- Udemy</li>
-          <li>Python Complete Course For Beginners - Udemy</li>
-          <li>PostgreSQL and MySQL for Beginners - Udemy</li>
-          <li>Linux for Data Engineers - Udemy</li>
+          <li data-pdf-block>Comprehensive Go Bootcamp with gRPC and Protocol Buffers - Udemy</li>
+          <li data-pdf-block>Python Complete Course For Beginners - Udemy</li>
+          <li data-pdf-block>PostgreSQL and MySQL for Beginners - Udemy</li>
+          <li data-pdf-block>Linux for Data Engineers - Udemy</li>
         </ul>
       </div>
 
@@ -366,61 +363,133 @@
 </div>
 
 <script>
-  /**
-   * PDF download:
-   *  - Renders ONLY the resume card (the button is outside it, so it never appears in the PDF).
-   *  - Single-page A4 output by scaling the rendered canvas to fit page bounds.
-   */
-  document.getElementById('downloadPDFbtn').addEventListener('click', async function () {
-    const btn = this;
-    const card = document.getElementById('resume-card');
-    const original = btn.innerHTML;
+/**
+ * PDF download with SAFE pagination.
+ *
+ *  Strategy:
+ *   1. Render the resume card to a canvas at the FULL A4 width
+ *      (no side margins → fills the page edge-to-edge).
+ *   2. Walk every element marked [data-pdf-block] and record its
+ *      bottom edge in canvas-pixel coordinates. Those are the only
+ *      "safe" places to cut between pages — they sit between
+ *      bullets / sections, never inside text.
+ *   3. For each page, take the largest safe boundary that still
+ *      fits in the remaining page height and slice the canvas there.
+ *      That guarantees no line is ever cut in half.
+ */
+document.getElementById('downloadPDFbtn').addEventListener('click', async function () {
+  const btn = this;
+  const card = document.getElementById('resume-card');
+  const original = btn.innerHTML;
 
-    btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Generating PDF...';
-    btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Generating PDF...';
+  btn.disabled = true;
 
-    try {
-      // Render only the resume card → button is never captured.
-      const canvas = await html2canvas(card, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-        windowWidth: card.scrollWidth,
-        windowHeight: card.scrollHeight
-      });
+  try {
+    // ---- Render the card to a canvas (only the card, not the button) ----
+    const canvas = await html2canvas(card, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#ffffff',
+      windowWidth: card.scrollWidth,
+      windowHeight: card.scrollHeight
+    });
 
-      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+    // canvas.height/canvas.width is the actual scale factor used by html2canvas
+    const pxToCanvas = canvas.height / card.scrollHeight;
 
-      // A4 mm
-      const pageW = 210, pageH = 297, margin = 1;
-      const availW = pageW - margin * 2;
-      const availH = pageH - margin * 2;
+    // ---- Collect SAFE break offsets in canvas-pixel space ----
+    const cardTop = card.getBoundingClientRect().top;
+    const breakOffsetsPx = new Set();
+    breakOffsetsPx.add(0);
+    breakOffsetsPx.add(canvas.height);
 
-      // Fit entire canvas onto a single A4 page
-      const ratio = Math.min(availW / canvas.width, availH / canvas.height);
-      const imgW  = canvas.width  * ratio;
-      const imgH  = canvas.height * ratio;
-      const x = (pageW - imgW) / 2;
-      const y = margin;
+    card.querySelectorAll('[data-pdf-block]').forEach(el => {
+      const r = el.getBoundingClientRect();
+      // Bottom edge of each block, relative to the card top, in CSS pixels:
+      const bottomCss = (r.bottom - cardTop) + 4; // small breathing room
+      const topCss = (r.top - cardTop) - 2;
+      breakOffsetsPx.add(Math.round(bottomCss * pxToCanvas));
+      breakOffsetsPx.add(Math.round(topCss * pxToCanvas));
+    });
 
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
-      pdf.addImage(imgData, 'JPEG', x, y, imgW, imgH);
+    const safeBreaks = Array.from(breakOffsetsPx)
+      .filter(v => v >= 0 && v <= canvas.height)
+      .sort((a, b) => a - b);
 
-      // Guarantee single page
-      const total = pdf.internal.getNumberOfPages();
-      for (let i = total; i > 1; i--) pdf.deletePage(i);
+    // ---- A4 layout (mm). Tiny margin on the sides → no big white bars. ----
+    const pageW = 210;
+    const pageH = 297;
+    const sideMargin = 0;       // edge-to-edge horizontally
+    const topMargin  = 0;
+    const usableW = pageW - sideMargin * 2;
+    const usableH = pageH - topMargin * 2;
 
-      pdf.save('Nitin_Pandey_Resume.pdf');
-    } catch (err) {
-      console.error('PDF error:', err);
-      alert('PDF generation failed: ' + err.message);
-    } finally {
-      btn.innerHTML = original;
-      btn.disabled = false;
+    // mm-per-canvas-pixel after fitting to width
+    const mmPerPx = usableW / canvas.width;
+    const pageHPx = usableH / mmPerPx;   // how many canvas-px fit on one page
+
+    // ---- Decide cut points so no text line is ever split ----
+    const cuts = [0];
+    while (cuts[cuts.length - 1] < canvas.height) {
+      const start = cuts[cuts.length - 1];
+      const idealEnd = start + pageHPx;
+
+      if (idealEnd >= canvas.height) {
+        cuts.push(canvas.height);
+        break;
+      }
+
+      // Find the LARGEST safe break that fits within (start, idealEnd]
+      let chosen = -1;
+      for (const b of safeBreaks) {
+        if (b > start && b <= idealEnd) chosen = b;
+        if (b > idealEnd) break;
+      }
+
+      // Fallback: if nothing safe fits (e.g. an oversized block), force-cut
+      // at the page boundary so we still make progress.
+      if (chosen <= start) chosen = Math.floor(idealEnd);
+
+      cuts.push(chosen);
     }
-  });
+
+    // ---- Build the PDF, one slice per page ----
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
+
+    for (let i = 0; i < cuts.length - 1; i++) {
+      const sliceStart = cuts[i];
+      const sliceEnd   = cuts[i + 1];
+      const sliceH     = sliceEnd - sliceStart;
+      if (sliceH <= 0) continue;
+
+      const slice = document.createElement('canvas');
+      slice.width  = canvas.width;
+      slice.height = sliceH;
+      const ctx = slice.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, slice.width, slice.height);
+      ctx.drawImage(canvas, 0, -sliceStart);
+
+      const imgData = slice.toDataURL('image/jpeg', 0.96);
+      const imgHmm  = sliceH * mmPerPx;
+
+      if (i > 0) pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', sideMargin, topMargin, usableW, imgHmm);
+    }
+
+    pdf.save('Nitin_Pandey_Resume.pdf');
+  } catch (err) {
+    console.error('PDF error:', err);
+    alert('PDF generation failed: ' + err.message);
+  } finally {
+    btn.innerHTML = original;
+    btn.disabled = false;
+  }
+});
 </script>
+
 </body>
 </html>
